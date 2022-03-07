@@ -13,9 +13,9 @@ import requests
 resultData = []
 yelp_limit = 50
 # Supported Cuisines
-cuisines = ['indian', 'mexican', 'chinese', 'thai', 'italian', 'japanese']
+cuisines = ['indian', 'mexican', 'chinese', 'thai', 'italian']
 # Change this location to Brooklyn, Manhattan.
-locations = ["manhattan", "brooklyn", "queens", "bronx", "staten island"]
+locations = ["manhattan", "brooklyn"]
 restaurantIterations = 20
 for cuisine in cuisines:
     for i in range(restaurantIterations):
@@ -30,7 +30,7 @@ for cuisine in cuisines:
             querystring = requestData
             payload = ""
             headers = {
-                "Authorization": "Bearer XXXXXXXXXXXXXXXXXXXXXXXXXXX", #YELP API AUTH API KEY
+                "Authorization": "Bearer XXXXXXXXXXXXXXXXXXXXXXXX", #YELP API AUTH API KEY
                 'cache-control': "no-cache"
             }
             response = requests.get(yelp_rest_endpoint, data=payload, headers=headers, params=querystring)
@@ -46,8 +46,8 @@ for cuisine in cuisines:
 
     
 dynamodb = boto3.resource('dynamodb', 
-aws_access_key_id='XXXXXXXXXX',
-aws_secret_access_key= 'XXXXXXXXXXXXXXXXXXXX',
+aws_access_key_id='XXXXXXXXXXXXXXXXXX',
+aws_secret_access_key= 'XXXXXXXXXXXXXXXXXX',
 region_name='us-east-1') #DYNAMODB REGION_NAME
 
 
@@ -60,7 +60,7 @@ for restaurant in resultData:
         'alias': restaurant['alias'],
         'name': restaurant['name'],
         'is_closed': restaurant['is_closed'],
-        'cuisine': restaurant['cuisine'],
+        'categories': restaurant['categories'],
         'rating': int(restaurant['rating']),
         'review_count': int(restaurant['review_count']),
         'address': restaurant['location']['display_address']
@@ -90,9 +90,9 @@ for restaurant in resultData:
 # credentials = boto3.Session().get_credentials()
 # awsauth = AWS4Auth(credentials.access_key, credentials.secret_key, 'us-east-1', 'es', session_token=credentials.token)
 
-host = 'search-diningbot-xxxxxxxxxxxxxxxxx.us-east-1.es.amazonaws.com' #ELASTIC SEARCH KEY
+host = 'search-diningbot-xxxxxxxxxxxxxxxxxxxxxxxxx.us-east-1.es.amazonaws.com' #ELASTIC SEARCH KEY
 es = Elasticsearch(
-    http_auth = ('demo', 'XXXXXXXXXXXXXXXX') #ELASTIC SEARCH MASTER KEY USERNAME AND PSWD
+    http_auth = ('demo', 'XXXXXXXXXXXXXX') #ELASTIC SEARCH MASTER KEY USERNAME AND PSWD
 )
 for restaurant in resultData:
     index_data = {
